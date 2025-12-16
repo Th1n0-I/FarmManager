@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.UI;
 using UnityEngine.Tilemaps;
 
 public class GridSystem : MonoBehaviour {
 	//* Refs
-	[SerializeField] private Tilemap tilemap;
-	[SerializeField] private Sprite  water;
-	[SerializeField] private Sprite  wheat;
-	[SerializeField] private Sprite  grass;
+	[SerializeField] private Tilemap    tilemap;
+	[SerializeField] private Sprite     water, wheat, grass;
+	[SerializeField] private GameObject highlight;
 
 	//* Settings
-	[SerializeField] private int mapSize;
-	[SerializeField] private int gridSize = 1;
+	[SerializeField] private int mapSize, gridSize;
 
 	//* Information
 	private Dictionary<Vector2, string> grid = new Dictionary<Vector2, string>();
 
 	//*States
 	private InputAction uiMousePosition;
+	public  string      lookingAtType;
 
 	#region Unity Methods
 
@@ -67,10 +65,10 @@ public class GridSystem : MonoBehaviour {
 
 		var gridPosition = new Vector2(Mathf.FloorToInt(mousePosition.x / gridSize),
 		                               Mathf.FloorToInt(mousePosition.y / gridSize));
-		Debug.Log(gridPosition);
-		Debug.Log(mousePosition);
-		Debug.Log(grid.ContainsKey(gridPosition) ? grid[gridPosition] : "No grid position");
-		Debug.Log(tilemap.GetSprite(new Vector3Int((int)mousePosition.x, (int)mousePosition.y, 0)));
+		
+		highlight.transform.position = gridPosition + new Vector2(0.5f, 0.5f);
+		
+		lookingAtType = grid[gridPosition];
 	}
 
 	#endregion
