@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,11 +7,15 @@ public class PlacementManager : MonoBehaviour {
 	#region Variables
 
 	//* Refs
-	[SerializeField] private GameObject buildModeUI;
+	//*		Buildings
+	[SerializeField] private GameObject grainMill;
+	[SerializeField] private Sprite     grainMillSprite;
 	[SerializeField] private GameObject conveyor;
 	[SerializeField] private Sprite     conveyorSprite;
 	[SerializeField] private GameObject highlighter;
 	[SerializeField] private Sprite     highlighterSprite;
+	//*		Other
+	[SerializeField] private GameObject buildModeUI;
 	[SerializeField] private GameObject gridSystemObject;
 
 	private InputAction openBuildMode;
@@ -39,17 +44,22 @@ public class PlacementManager : MonoBehaviour {
 		openBuildMode = InputSystem.actions["OpenBuildMode"];
 		click         = InputSystem.actions["Click"];
 		rotate        = InputSystem.actions["Rotate"];
-
+		
+		//? Adds buildings sprites and gameobjects to dictionaries.
 		buildingSprites.Add("Conveyor", conveyorSprite);
 		buildings.Add("Conveyor", conveyor);
 		
-		buildingSprites.Add("Highlight", highlighterSprite);
-		buildings.Add("Highlight", highlighter);
+		var tempAllowedPlacements = new List<string>();
+		tempAllowedPlacements.Add("Grass");
+		tempAllowedPlacements.Add("Wheat");
+		allowedPlacements.Add("Conveyor", tempAllowedPlacements);
 
-		var conveyorAllowedPlacements = new List<string>();
-		conveyorAllowedPlacements.Add("Grass");
+		buildingSprites.Add("GrainMill", grainMillSprite);
+		buildings.Add("GrainMill", grainMill);
+		
+		allowedPlacements.Add("GrainMill", tempAllowedPlacements);
 
-		allowedPlacements.Add("Conveyor", conveyorAllowedPlacements);
+		
 	}
 
 	private void Update() {
@@ -64,7 +74,7 @@ public class PlacementManager : MonoBehaviour {
 		if (openBuildMode.triggered) {
 			switch (inBuildMode) {
 				case true:
-					inBuildMode                                        = false;
+					inBuildMode = false;
 					buildModeUI.SetActive(false);
 					highlighter.GetComponent<SpriteRenderer>().enabled = false;
 					break;
@@ -94,7 +104,7 @@ public class PlacementManager : MonoBehaviour {
 		}
 
 		highlighter.GetComponent<SpriteRenderer>().color =
-			allowedPlacements[placingBuilding].Contains(gridSystem.lookingAtType)
+			allowedPlacements[placingBuilding].Contains(gridSystem.lookingAtType) && !buildingsOnMap.ContainsKey(gridSystem.lookingAtTile)
 				? new Color(0f, 1f, 0f, 0.9f)
 				: new Color(1f, 0f, 0f, 0.9f);
 
@@ -137,13 +147,15 @@ public class PlacementManager : MonoBehaviour {
 	public void SelectRemoveMode() {
 		buildModeTool = "Remove";
 	}
-	
+
 	public void SelectConveyor() {
 		placingBuilding = "Conveyor";
+		if (buildModeTool == "place") highlighter.GetComponent<SpriteRenderer>().sprite = buildingSprites["Conveyor"]; 
 	}
 
-	public void SelectHighlight() {
-		placingBuilding = "Highlight";
+	public void SelectGrainMill() {
+		placingBuilding = "GrainMill";
+		if (buildModeTool == "place") highlighter.GetComponent<SpriteRenderer>().sprite = buildingSprites["GrainMill"]; 
 	}
 
 	#endregion
