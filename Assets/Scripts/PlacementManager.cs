@@ -42,6 +42,9 @@ public class PlacementManager : MonoBehaviour {
 
 		buildingSprites.Add("Conveyor", conveyorSprite);
 		buildings.Add("Conveyor", conveyor);
+		
+		buildingSprites.Add("Highlight", highlighterSprite);
+		buildings.Add("Highlight", highlighter);
 
 		var conveyorAllowedPlacements = new List<string>();
 		conveyorAllowedPlacements.Add("Grass");
@@ -133,6 +136,14 @@ public class PlacementManager : MonoBehaviour {
 
 	public void SelectRemoveMode() {
 		buildModeTool = "Remove";
+	}
+	
+	public void SelectConveyor() {
+		placingBuilding = "Conveyor";
+	}
+
+	public void SelectHighlight() {
+		placingBuilding = "Highlight";
 	}
 
 	#endregion
