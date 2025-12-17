@@ -13,11 +13,12 @@ public class GridSystem : MonoBehaviour {
 	[SerializeField] private int mapSize, gridSize;
 
 	//* Information
-	private Dictionary<Vector2, string> grid = new Dictionary<Vector2, string>();
+	private Dictionary<Vector2, string> grid         = new Dictionary<Vector2, string>();
 
 	//*States
 	private InputAction uiMousePosition;
 	public  string      lookingAtType;
+	public  Vector2     lookingAtTile;
 
 	#region Unity Methods
 
@@ -65,10 +66,11 @@ public class GridSystem : MonoBehaviour {
 
 		var gridPosition = new Vector2(Mathf.FloorToInt(mousePosition.x / gridSize),
 		                               Mathf.FloorToInt(mousePosition.y / gridSize));
-		
+
 		highlight.transform.position = gridPosition + new Vector2(0.5f, 0.5f);
-		
+
 		lookingAtType = grid[gridPosition];
+		lookingAtTile = gridPosition;
 	}
 
 	#endregion
