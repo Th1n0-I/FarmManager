@@ -30,7 +30,7 @@ public class PlacementManager : MonoBehaviour {
 	private GridSystem gridSystem;
 	private string     placingBuilding = "Conveyor";
 
-	private Dictionary<Vector2, GameObject>  buildingsOnMap    = new Dictionary<Vector2, GameObject>();
+	public Dictionary<Vector2, GameObject>  buildingsOnMap    = new Dictionary<Vector2, GameObject>();
 	private Dictionary<string, List<string>> allowedPlacements = new Dictionary<string, List<string>>();
 	private Dictionary<string, GameObject>   buildings         = new Dictionary<string, GameObject>();
 	private Dictionary<string, Sprite>       buildingSprites   = new Dictionary<string, Sprite>();

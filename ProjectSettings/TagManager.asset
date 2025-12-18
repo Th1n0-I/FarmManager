@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Highlight
+  - GridManager
+  - PlacementManager
+  - Conveyor
   layers:
   - Default
   - TransparentFX

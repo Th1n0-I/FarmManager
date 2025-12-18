@@ -13,7 +13,7 @@ public class GridSystem : MonoBehaviour {
 	[SerializeField] private int mapSize, gridSize;
 
 	//* Information
-	private Dictionary<Vector2, string> grid         = new Dictionary<Vector2, string>();
+	public Dictionary<Vector2, string> grid         = new Dictionary<Vector2, string>();
 
 	//*States
 	private InputAction uiMousePosition;
