@@ -4,8 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlacementManager : MonoBehaviour {
-	#region Variables
+	
 
+	#region Variables
+	//* Hashes
+	private static readonly int CloseBuildMode = Animator.StringToHash("CloseBuildMode");
+	private static readonly int OpenBuildMode = Animator.StringToHash("OpenBuildMode");
+	
 	//* Refs
 	//*		Buildings
 	[SerializeField] private GameObject grainMill;
@@ -75,12 +80,12 @@ public class PlacementManager : MonoBehaviour {
 			switch (inBuildMode) {
 				case true:
 					inBuildMode = false;
-					buildModeUI.SetActive(false);
+					buildModeUI.GetComponent<Animator>().SetTrigger(CloseBuildMode);
 					highlighter.GetComponent<SpriteRenderer>().enabled = false;
 					break;
 				case false:
 					inBuildMode = true;
-					buildModeUI.SetActive(true);
+					buildModeUI.GetComponent<Animator>().SetTrigger(OpenBuildMode);
 					break;
 			}
 		}
