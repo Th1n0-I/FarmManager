@@ -30,7 +30,7 @@ public class PlacementManager : MonoBehaviour {
 	private GridSystem gridSystem;
 	private string     placingBuilding = "Conveyor";
 
-	public Dictionary<Vector2, GameObject>  buildingsOnMap    = new Dictionary<Vector2, GameObject>();
+	public  Dictionary<Vector2, GameObject>  BuildingsOnMap    = new Dictionary<Vector2, GameObject>();
 	private Dictionary<string, List<string>> allowedPlacements = new Dictionary<string, List<string>>();
 	private Dictionary<string, GameObject>   buildings         = new Dictionary<string, GameObject>();
 	private Dictionary<string, Sprite>       buildingSprites   = new Dictionary<string, Sprite>();
@@ -40,9 +40,10 @@ public class PlacementManager : MonoBehaviour {
 	#region Unity Functions
 
 	private void Start() {
-		gridSystem = gridSystemObject.GetComponent<GridSystem>();
+		gridSystem     = gridSystemObject.GetComponent<GridSystem>();
 
 		openBuildMode = InputSystem.actions["OpenBuildMode"];
+		Debug.Log(openBuildMode);
 		click         = InputSystem.actions["Click"];
 		rotate        = InputSystem.actions["Rotate"];
 
@@ -53,13 +54,13 @@ public class PlacementManager : MonoBehaviour {
 		buildings.Add("GrainMill", grainMill);
 		buildingSprites.Add("Harvester", harvesterSprite);
 		buildings.Add("Harvester", harvester);
-		
+
 
 		var tempAllowedPlacements = new List<string>();
-		
+
 		tempAllowedPlacements.Add("Wheat");
 		allowedPlacements.Add("Harvester", tempAllowedPlacements);
-		
+
 		tempAllowedPlacements.Add("Grass");
 		allowedPlacements.Add("Conveyor",  tempAllowedPlacements);
 		allowedPlacements.Add("GrainMill", tempAllowedPlacements);
@@ -108,7 +109,7 @@ public class PlacementManager : MonoBehaviour {
 
 		highlighter.GetComponent<SpriteRenderer>().color =
 			allowedPlacements[placingBuilding].Contains(gridSystem.lookingAtType) &&
-			!buildingsOnMap.ContainsKey(gridSystem.lookingAtTile)
+			!BuildingsOnMap.ContainsKey(gridSystem.lookingAtTile)
 				? new Color(0f, 1f, 0f, 0.9f)
 				: new Color(1f, 0f, 0f, 0.9f);
 
@@ -125,19 +126,19 @@ public class PlacementManager : MonoBehaviour {
 	}
 
 	private void PlaceBuilding() {
-		if (buildingsOnMap.ContainsKey(gridSystem.lookingAtTile) ||
+		if (BuildingsOnMap.ContainsKey(gridSystem.lookingAtTile) ||
 		    !allowedPlacements[placingBuilding].Contains(gridSystem.lookingAtType)) return;
 
 		var placedBuilding = Instantiate(buildings[placingBuilding], highlighter.transform.position,
 		                                 highlighter.transform.rotation);
-		buildingsOnMap.Add(gridSystem.lookingAtTile, placedBuilding);
+		BuildingsOnMap.Add(gridSystem.lookingAtTile, placedBuilding);
 	}
 
 	private void DestroyBuilding() {
-		if (!buildingsOnMap.ContainsKey(gridSystem.lookingAtTile)) return;
+		if (!BuildingsOnMap.ContainsKey(gridSystem.lookingAtTile)) return;
 
-		Destroy(buildingsOnMap[gridSystem.lookingAtTile]);
-		buildingsOnMap.Remove(gridSystem.lookingAtTile);
+		Destroy(BuildingsOnMap[gridSystem.lookingAtTile]);
+		BuildingsOnMap.Remove(gridSystem.lookingAtTile);
 	}
 
 	#endregion
@@ -161,6 +162,7 @@ public class PlacementManager : MonoBehaviour {
 		placingBuilding = "GrainMill";
 		if (buildModeTool == "place") highlighter.GetComponent<SpriteRenderer>().sprite = buildingSprites["GrainMill"];
 	}
+
 	public void SelectHarvester() {
 		placingBuilding = "Harvester";
 		if (buildModeTool == "place") highlighter.GetComponent<SpriteRenderer>().sprite = buildingSprites["Harvester"];
